@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#101827" />
+    <title>Randomly — instant generators</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="hero">
+        <div class="brand-mark" aria-hidden="true">✦</div>
+        <p class="eyebrow">RANDOM GENERATOR</p>
+        <h1>Let chance<br /><span>make the call.</span></h1>
+        <p class="intro">A little randomness for your next decision, idea, or game.</p>
+      </header>
+
+      <section class="generator-grid" aria-label="Random generators">
+        <article class="generator-card number-card">
+          <div class="card-top"><span class="icon">#</span><span class="tag">0 — 99</span></div>
+          <h2>Number</h2>
+          <p>Pick a number when you need a nudge.</p>
+          <div class="result" id="number-result" aria-live="polite">—</div>
+          <button class="generate-button" data-endpoint="/number" data-target="number-result">Generate number <span>↗</span></button>
+        </article>
+
+        <article class="generator-card letter-card">
+          <div class="card-top"><span class="icon">A</span><span class="tag">A — Z</span></div>
+          <h2>Letter</h2>
+          <p>Find a starting point for your next idea.</p>
+          <div class="result" id="letter-result" aria-live="polite">—</div>
+          <button class="generate-button" data-endpoint="/letter" data-target="letter-result">Generate letter <span>↗</span></button>
+        </article>
+
+        <article class="generator-card rps-card">
+          <div class="card-top"><span class="icon">✌</span><span class="tag">3 choices</span></div>
+          <h2>Rock paper scissors</h2>
+          <p>Settle the score with one click.</p>
+          <div class="result result-word" id="rps-result" aria-live="polite">—</div>
+          <button class="generate-button" data-endpoint="/rock-paper-scissors" data-target="rps-result">Make a choice <span>↗</span></button>
+        </article>
+      </section>
+
+      <section class="history-card" aria-labelledby="history-title">
+        <div class="history-heading">
+          <div>
+            <p class="eyebrow">FROM THE DATABASE</p>
+            <h2 id="history-title">Recent generations</h2>
+          </div>
+          <p class="history-status" id="history-status" role="status" aria-live="polite">Loading history...</p>
+        </div>
+        <div class="history-table-wrap">
+          <table class="history-table">
+            <caption class="sr-only">The ten most recent generated values</caption>
+            <thead>
+              <tr>
+                <th scope="col">Type</th>
+                <th scope="col">Value</th>
+                <th scope="col">Generated at</th>
+              </tr>
+            </thead>
+            <tbody id="history-body">
+              <tr class="history-empty"><td colspan="3">Loading history...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <footer><span class="pulse"></span> Ready when you are <span class="footer-dot">•</span> Powered by Express</footer>
+    </main>
+    <script src="/app.js"></script>
+  </body>
+</html>

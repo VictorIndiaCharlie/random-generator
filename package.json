@@ -1,0 +1,17 @@
+{
+  "name": "01-random-generator",
+  "version": "1.0.0",
+  "description": "A simple random generator",
+  "license": "ISC",
+  "author": "Adi",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "mysql2": "^3.14.3"
+  }
+}
