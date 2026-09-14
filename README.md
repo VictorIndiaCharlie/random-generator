@@ -81,11 +81,21 @@ npm test
 
 The tests use Node's built-in test runner and cover the random generators and date formatting. They do not require MySQL.
 
+To run the end-to-end test, start the complete Compose stack first:
+
+````powershell
+docker compose up --build -d
+npm run test:e2e
+docker compose down -v
+````
+
+The end-to-end test checks the health endpoints, all generators, and persistence through `/history`.
+
 ## Continuous integration
 
-The GitHub Actions workflow in `.github/workflows/ci.yml` runs for pull requests and pushes to `main`. It checks out the source, installs dependencies, runs the unit tests, lints both Dockerfiles, validates the Compose configuration, checks the Dockerfiles, and builds the API and frontend images tagged with the commit SHA.
+The GitHub Actions workflow in `.github/workflows/ci.yml` runs for pull requests and pushes to `develop`. It uses three dependent jobs: `build-and-test` installs dependencies, runs unit tests, lints and checks Dockerfiles, builds both images, and uploads them as an artifact; `compose-start` validates and starts the Compose stack; `e2e-tests` starts its own stack and tests the running application.
 
-The workflow does not publish images or deploy anything. Image publishing to Amazon ECR will be added separately.
+The workflow does not publish images or deploy anything. Image publishing to Amazon ECR will be added separately. Jobs run on separate GitHub-hosted runners, so the Docker image archive is transferred between jobs and each Compose job starts its own stack.
 
 ## Jenkins Multibranch Pipeline
 
