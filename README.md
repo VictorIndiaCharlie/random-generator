@@ -87,6 +87,45 @@ The GitHub Actions workflow in `.github/workflows/ci.yml` runs for pull requests
 
 The workflow does not publish images or deploy anything. Image publishing to Amazon ECR will be added separately.
 
+## Jenkins Multibranch Pipeline
+
+The root-level `Jenkinsfile` contains the equivalent CI pipeline for Jenkins. A Jenkins Multibranch Pipeline scans the GitHub repository, discovers branches that contain this file, and runs the pipeline for each branch or pull request.
+
+The stages are:
+
+```text
+Checkout
+→ npm ci
+→ npm test
+→ Hadolint Dockerfile checks
+→ docker compose config validation
+→ Dockerfile checks
+→ Build API image
+→ Build frontend image
+```
+
+The Jenkinsfile does not publish images, access Amazon ECR, or deploy to Kubernetes. Images are tagged with the checked-out commit and remain on the Jenkins agent.
+
+### Configure the Multibranch job
+
+Create a Multibranch Pipeline job using this repository:
+
+```text
+https://github.com/raduPopescu05/random-generator.git
+```
+
+Configure branch discovery according to the branches you want Jenkins to build. The Jenkinsfile itself does not hardcode `main` or `develop`.
+
+The Jenkins agent must provide:
+
+- Git
+- Node.js 24 and npm
+- Docker CLI and access to a Docker daemon
+- Docker Compose v2
+- Hadolint
+
+When Jenkins is later run in Docker, the agent will need Docker CLI access to the host Docker daemon, commonly through `/var/run/docker.sock`. Jenkins’ Declarative Pipeline linter can validate the Jenkinsfile after Jenkins is running.
+
 ### Dockerfile and Compose checks
 
 The same checks can be run locally when the Docker daemon is available:
