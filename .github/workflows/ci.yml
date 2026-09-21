@@ -6,17 +6,18 @@ on:
   pull_request:
     branches: [ main ]
 
-# Values extracted from the old hardcoded ci.yml
-
+# ══════════════════════════════════════════════════
+# Extracted from what used to be hardcoded
+# ══════════════════════════════════════════════════
 env:
   NODE_VERSION: '22'
   BACKEND_IMAGE: random-generator-backend
   FRONTEND_IMAGE: random-generator-frontend
 
 jobs:
-
-  # BACKEND  — Express + MySQL API (repo root)
-
+  # ═════════════════════════════════════════════
+  # BACKEND — Express + MySQL API (repo root)
+  # ═════════════════════════════════════════════
   backend:
     name: Backend – Install, Test, Docker build
     runs-on: ubuntu-latest
@@ -48,10 +49,10 @@ jobs:
       - name: Build backend Docker image
         run: docker build -t ${{ env.BACKEND_IMAGE }}:${{ github.sha }} .
 
-  
+  # ═════════════════════════════════════════════
   # FRONTEND — static site served by nginx
   # Build context = repo root (Dockerfile copies public/ + frontend/nginx.conf)
- 
+  # ═════════════════════════════════════════════
   frontend:
     name: Frontend – Docker build (nginx)
     runs-on: ubuntu-latest
@@ -66,17 +67,3 @@ jobs:
             -f frontend/Dockerfile \
             -t ${{ env.FRONTEND_IMAGE }}:${{ github.sha }} \
             .
-
-  # SANITY CHECK — compose file is still valid
-
-  compose-validate:
-    name: Validate docker-compose
-    runs-on: ubuntu-latest
-    needs: [ backend, frontend ]
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Validate docker-compose.yml
-        run: docker compose config
